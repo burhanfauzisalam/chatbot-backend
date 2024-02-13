@@ -1,4 +1,5 @@
 require("dotenv").config();
+const threadModel = require("./models/thread.js");
 const OpenAI = require("openai");
 
 exports.try = async (req, res) => {
@@ -23,6 +24,11 @@ exports.askNewQuestion = async (req, res) => {
     if (!body.sThread) {
       const oThread = await openai.beta.threads.create();
       sThread = oThread.id;
+      const thread = {
+        threadID: sThread,
+      };
+      const data = new threadModel(thread);
+      const save = await data.save();
     }
 
     // Add a message to the thread
@@ -39,7 +45,6 @@ exports.askNewQuestion = async (req, res) => {
     // Wait for the run to complete
     await waitForRunComplete(sThread, run.id);
 
-    // Retrieve messages from the thread
     const threadMessages = await openai.beta.threads.messages.list(sThread);
     const pertanyaan = body.prompt;
     const jawaban = threadMessages.body.data[0].content[0].text.value;
@@ -59,9 +64,10 @@ exports.askNewQuestion = async (req, res) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }
+
     res.send({
       question: pertanyaan,
-      message: jawaban.split("【")[0].replace(/\n/g, "<br>"),
+      answer: jawaban.split("【")[0].replace(/\n/g, "<br>"),
       threadID: sThread,
     });
   } catch (error) {
