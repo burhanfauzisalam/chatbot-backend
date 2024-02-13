@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/burhanfauzisalam/chatbot-backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "openai": "^4.28.0"
   }
 }
