@@ -1,0 +1,28 @@
+{
+  "name": "chatbot-backend",
+  "version": "1.0.0",
+  "description": "This is a server of the chatbot",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burhanfauzisalam/chatbot-backend.git"
+  },
+  "keywords": [
+    "chatbot",
+    "backend"
+  ],
+  "author": "Burhan Fauzi Salam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/burhanfauzisalam/chatbot-backend/issues"
+  },
+  "homepage": "https://github.com/burhanfauzisalam/chatbot-backend#readme",
+  "dependencies": {
+    "dotenv": "^16.4.3",
+    "express": "^4.18.2"
+  }
+}
