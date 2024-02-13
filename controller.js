@@ -11,9 +11,9 @@ exports.try = async (req, res) => {
 
 exports.askNewQuestion = async (req, res) => {
   try {
-    let body = req.body; // Get the request body
+    const body = req.body; // Get the request body
     let sThread = body.sThread;
-    sAssistant = process.env["sAssistant"];
+    const sAssistant = process.env["sAssistant"];
 
     const openai = new OpenAI({
       apiKey: process.env["OPENAI_API_KEY"],
@@ -21,7 +21,7 @@ exports.askNewQuestion = async (req, res) => {
 
     // Check if it's a new conversation or an existing thread
     if (!body.sThread) {
-      let oThread = await openai.beta.threads.create();
+      const oThread = await openai.beta.threads.create();
       sThread = oThread.id;
     }
 
@@ -32,7 +32,7 @@ exports.askNewQuestion = async (req, res) => {
     });
 
     // Run the assistant with the provided thread
-    let run = await openai.beta.threads.runs.create(sThread, {
+    const run = await openai.beta.threads.runs.create(sThread, {
       assistant_id: sAssistant,
     });
 
