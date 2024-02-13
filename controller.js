@@ -14,9 +14,11 @@ exports.askNewQuestion = async (req, res) => {
     let body = req.body; // Get the request body
     let sThread = body.sThread;
     sAssistant = process.env["sAssistant"];
+
     const openai = new OpenAI({
       apiKey: process.env["OPENAI_API_KEY"],
     });
+
     // Check if it's a new conversation or an existing thread
     if (!body.sThread) {
       let oThread = await openai.beta.threads.create();
@@ -41,12 +43,6 @@ exports.askNewQuestion = async (req, res) => {
     const threadMessages = await openai.beta.threads.messages.list(sThread);
     const pertanyaan = body.prompt;
     const jawaban = threadMessages.body.data[0].content[0].text.value;
-    // Send the thread messages and thread ID as a response
-    res.send({
-      question: pertanyaan,
-      message: jawaban.split("【")[0].replace(/\n/g, "<br>"),
-      threadID: sThread,
-    });
 
     async function waitForRunComplete(sThreadId, sRunId) {
       while (true) {
@@ -60,9 +56,14 @@ exports.askNewQuestion = async (req, res) => {
           break; // Exit loop if run is completed, failed, or requires action
         }
         // Delay the next check to avoid high frequency polling
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }
+    res.send({
+      question: pertanyaan,
+      message: jawaban.split("【")[0].replace(/\n/g, "<br>"),
+      threadID: sThread,
+    });
   } catch (error) {
     res.status(500).json(error);
   }
