@@ -1,6 +1,14 @@
 require("dotenv").config();
 const OpenAI = require("openai");
 
+exports.try = async (req, res) => {
+  try {
+    res.status(200).json({ message: "hello" });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 exports.askNewQuestion = async (req, res) => {
   try {
     let body = req.body; // Get the request body
