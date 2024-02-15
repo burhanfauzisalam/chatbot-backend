@@ -3,9 +3,24 @@ const threadModel = require("./models/thread.js");
 const OpenAI = require("openai");
 const { toLocalDate } = require("./functions/toLocaleDate.js");
 
+const openai = new OpenAI({
+  apiKey: process.env["OPENAI_API_KEY"],
+});
+
 exports.try = async (req, res) => {
   try {
     res.status(200).json({ message: "hello" });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+exports.listChat = async (req, res) => {
+  try {
+    const body = req.body;
+    const threadID = body.sThread;
+    const messages = await openai.beta.threads.messages.list(threadID);
+    res.status(200).json(messages);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -16,10 +31,6 @@ exports.askNewQuestion = async (req, res) => {
     const body = req.body; // Get the request body
     let sThread = body.sThread;
     const sAssistant = process.env["sAssistant"];
-
-    const openai = new OpenAI({
-      apiKey: process.env["OPENAI_API_KEY"],
-    });
 
     // Check if it's a new conversation or an existing thread
     if (!body.sThread) {
