@@ -2,6 +2,7 @@ require("dotenv").config();
 const threadModel = require("./models/thread.js");
 const OpenAI = require("openai");
 const { toLocalDate } = require("./functions/toLocaleDate.js");
+const { toLocalDate } = require("./functions/toLocaleDate.js");
 
 exports.try = async (req, res) => {
   try {
@@ -29,8 +30,12 @@ exports.askNewQuestion = async (req, res) => {
       const thread = {
         threadID: sThread,
         dateCreated: localDate,
+        dateCreated: localDate,
       };
+      console.log(date);
+      console.log(localDate);
       const data = new threadModel(thread);
+      await data.save();
       await data.save();
     }
 
