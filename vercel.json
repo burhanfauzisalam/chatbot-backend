@@ -12,10 +12,5 @@
       "src": "/(.*)",
       "dest": "app.js"
     }
-  ],
-  "functions": {
-    "askNewQuestion": {
-      "maxDuration": 100
-    }
-  }
+  ]
 }
