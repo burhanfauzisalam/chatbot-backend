@@ -20,9 +20,15 @@ exports.listChat = async (req, res) => {
     const body = req.body;
     const threadID = body.sThread;
     const messages = await openai.beta.threads.messages.list(threadID);
-    res.status(200).json(messages);
+    const data = messages.body.data;
+
+    const filteredData = data.map((item) => ({
+      role: item.role,
+      value: item.content[0]?.text?.value || null,
+    }));
+    res.status(200).json(filteredData);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json(error.error.message);
   }
 };
 
