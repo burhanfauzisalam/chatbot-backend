@@ -85,7 +85,12 @@ exports.askNewQuestion = async (req, res) => {
       }
     }
 
+    if (res.statusCode > 499) {
+      return await waitForRunComplete(sThread, run.id);
+    }
+
     res.send({
+      code: res.statusCode,
       question: pertanyaan,
       answer: jawaban.split("【")[0].replace(/\n/g, "<br>"),
       threadID: sThread,
