@@ -85,7 +85,7 @@ exports.askNewQuestion = async (req, res) => {
       }
     }
 
-    if (res.statusCode > 499) {
+    if (res.statusCode === 504) {
       return await waitForRunComplete(sThread, run.id);
     }
 
